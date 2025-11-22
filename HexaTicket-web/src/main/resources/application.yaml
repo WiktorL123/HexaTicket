@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: HexaTicket
+  data:
+    mongodb:
+      uri: mongodb+srv://wiktorlem1_db_user:ai7pKD5t4w91LAgW@hexaticket.dcv3ed4.mongodb.net/hexaticket_db?appName=HexaTicket
+      auto-index-creation: true
+  graphql:
+    graphiql:
+      enabled: true
