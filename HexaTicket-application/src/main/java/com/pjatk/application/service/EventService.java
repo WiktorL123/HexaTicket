@@ -20,10 +20,9 @@ public class EventService implements EventsPort {
     public void delete(String id) {
 
     }
-
     @Override
     public List<Event> findAll() {
-        return List.of();
+        return port.findAll();
     }
 
     @Override

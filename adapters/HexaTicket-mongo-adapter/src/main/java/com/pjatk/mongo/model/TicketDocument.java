@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -21,8 +22,8 @@ public class TicketDocument {
 
     @Id
     private String id;
-    @DocumentReference
-    private EventDocument event;
+    @Indexed
+    private String eventId;
 
     @Field(name = "ticket_code")
     private UUID ticketCode;

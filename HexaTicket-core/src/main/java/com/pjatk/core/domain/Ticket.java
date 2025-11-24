@@ -13,7 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Ticket {
     private String id;
-    private Event event;
+
+    private String eventId;
 
     private UUID ticketCode;
 
