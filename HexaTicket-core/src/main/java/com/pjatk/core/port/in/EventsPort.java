@@ -3,6 +3,7 @@ package com.pjatk.core.port.in;
 import com.pjatk.core.domain.Event;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EventsPort {
     Event create(Event event);
@@ -11,5 +12,7 @@ public interface EventsPort {
 
     List<Event> findAll();
 
-    Event getByEmail(String email);
+    Event getById(String id);
+
+    Event updatePartially(String id, Event event);
 }

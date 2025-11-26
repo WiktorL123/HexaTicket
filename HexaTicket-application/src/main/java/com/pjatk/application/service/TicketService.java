@@ -17,6 +17,11 @@ public class TicketService implements TicketsPort {
     }
 
     @Override
+    public Ticket getByEmail(String email) {
+        return null;
+    }
+
+    @Override
     public void delete() {
 
     }
@@ -26,8 +31,4 @@ public class TicketService implements TicketsPort {
         return List.of();
     }
 
-    @Override
-    public Ticket getById(String id) {
-        return null;
-    }
 }

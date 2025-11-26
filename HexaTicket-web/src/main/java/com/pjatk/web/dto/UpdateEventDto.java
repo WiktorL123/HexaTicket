@@ -1,40 +1,40 @@
-package com.pjatk.mongo.model;
+package com.pjatk.web.dto;
 
 import com.pjatk.core.domain.Status;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "events")
-public class EventDocument {
-    @Id
-    private String id;
+public class UpdateEventDto {
+    @Size(min = 3, max = 100, message = "Nazwa musi mieć od 3 do 100 znaków")
     private String name;
+
+    @Size(max = 500, message = "Opis nie może być dłuższy niż 500 znaków")
     private String description;
+
     private String venue;
 
-    @Field(name = "start_date")
+    @Future(message = "Data wydarzenia musi być w przyszłości")
     private LocalDateTime startDate;
 
-    @Field(name = "total_seats")
+    @Min(value = 1, message = "Musi być przynajmniej 1 miejsce")
     private Integer totalSeats;
-    @Field(name = "available_seats")
+
+    @Min(value = 0, message = "Liczba miejsc nie może być ujemna")
     private Integer availableSeats;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "Cena nie może być ujemna")
     private BigDecimal price;
-    @Indexed
+
     private String category;
+
     private Status status;
 }

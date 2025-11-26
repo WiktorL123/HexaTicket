@@ -4,6 +4,7 @@ import com.pjatk.core.domain.Event;
 import com.pjatk.core.port.in.EventsPort;
 import com.pjatk.web.dto.CreateEventDto;
 import com.pjatk.web.dto.ResponseEventDto;
+import com.pjatk.web.dto.UpdateEventDto;
 import com.pjatk.web.mapper.DomainDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,24 @@ public class EventController {
                 .map(event->mapper.toEventDto(event))
                 .toList();
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") String id){
+        port.delete(id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseEventDto> getById(@PathVariable("id") String id){
+        Event found = port.getById(id);
+        ResponseEventDto response = mapper.toEventDto(found);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ResponseEventDto> updatePartially( @Valid @PathVariable("id") String id, @RequestBody UpdateEventDto dto){
+        Event found = port.updatePartially(id, mapper.updateToEventDomain(dto));
+        ResponseEventDto response = mapper.toEventDto(found);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

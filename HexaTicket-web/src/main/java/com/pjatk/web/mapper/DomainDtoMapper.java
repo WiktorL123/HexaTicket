@@ -3,6 +3,7 @@ package com.pjatk.web.mapper;
 import com.pjatk.core.domain.Event;
 import com.pjatk.web.dto.CreateEventDto;
 import com.pjatk.web.dto.ResponseEventDto;
+import com.pjatk.web.dto.UpdateEventDto;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,8 @@ public class DomainDtoMapper {
                 dto.getAvailableSeats(),
                 dto.getPrice(),
                 dto.getCategory(),
-                dto.getStatus()
+                null
+
         );
     }
     @NonNull
@@ -35,6 +37,21 @@ public class DomainDtoMapper {
                 event.getAvailableSeats(),
                 event.getPrice(),
                 event.getCategory(),
-                event.getStatus());
+                event.getStatus()
+        );
+    }
+    public Event updateToEventDomain(UpdateEventDto dto){
+        return new Event(
+                null,
+                dto.getName(),
+                dto.getDescription(),
+                dto.getVenue(),
+                dto.getStartDate(),
+                dto.getTotalSeats(),
+                dto.getAvailableSeats(),
+                dto.getPrice(),
+                dto.getCategory(),
+                dto.getStatus()
+        );
     }
 }

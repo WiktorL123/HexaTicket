@@ -21,5 +21,5 @@ public class Event {
     private Integer availableSeats;
     private BigDecimal price;
     private String category;
-    private String status;
+    private Status status;
 }

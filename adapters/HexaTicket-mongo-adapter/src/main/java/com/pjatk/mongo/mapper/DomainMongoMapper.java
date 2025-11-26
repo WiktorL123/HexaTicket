@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Component
 public class DomainMongoMapper {
    public Event toEventDomain(EventDocument document){
-        return new Event(
+
+       return new Event(
                 document.getId(),
                 document.getName(),
                 document.getDescription(),

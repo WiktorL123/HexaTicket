@@ -1,7 +1,6 @@
 package com.pjatk.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,21 +14,37 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateEventDto {
-    @NotBlank
+
+    @NotBlank(message = "Nazwa jest wymagana")
+    @Size(min = 3, max = 100, message = "Nazwa musi mieć od 3 do 100 znaków")
     private String name;
-    @NotBlank
+
+    @NotBlank(message = "Opis jest wymagany")
+    @Size(max = 500, message = "Opis nie może być dłuższy niż 500 znaków")
     private String description;
-    @NotBlank
+
+    @NotBlank(message = "Lokalizacja jest wymagana")
     private String venue;
+
+    @NotNull(message = "Data rozpoczęcia jest wymagana")
+    @Future(message = "Data wydarzenia musi być w przyszłości")
     private LocalDateTime startDate;
-    @NotNull
+
+    @NotNull(message = "Liczba miejsc jest wymagana")
+    @Min(value = 1, message = "Musi być przynajmniej 1 miejsce")
     private Integer totalSeats;
-    @NotNull
+
+    @NotNull(message = "Dostępne miejsca są wymagane")
+    @Min(value = 0, message = "Liczba miejsc nie może być ujemna")
     private Integer availableSeats;
-    @NotNull
+
+    @NotNull(message = "Cena jest wymagana")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Cena nie może być ujemna")
     private BigDecimal price;
-    @NotBlank
+
+    @NotBlank(message = "Kategoria jest wymagana")
     private String category;
-    @NotBlank
-    private String status;
+
+
+
 }

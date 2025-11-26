@@ -12,5 +12,5 @@ public interface TicketsPort {
 
     List<Ticket> findALl();
 
-    Ticket getById(String id);
+    Ticket getByEmail(String email);
 }

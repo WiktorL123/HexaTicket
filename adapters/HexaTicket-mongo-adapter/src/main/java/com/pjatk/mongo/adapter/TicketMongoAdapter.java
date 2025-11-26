@@ -11,6 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class TicketMongoAdapter implements TicketsRepositoryPort {
+    @Override
+    public Ticket getByEmail(String email) {
+        return null;
+    }
 
     private final TicketRepository repository;
 
@@ -30,8 +34,4 @@ public class TicketMongoAdapter implements TicketsRepositoryPort {
         return List.of();
     }
 
-    @Override
-    public Ticket getById(String id) {
-        return null;
-    }
 }
