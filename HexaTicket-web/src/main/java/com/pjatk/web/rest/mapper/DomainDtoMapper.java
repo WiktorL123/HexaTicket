@@ -1,9 +1,9 @@
-package com.pjatk.web.mapper;
+package com.pjatk.web.rest.mapper;
 
 import com.pjatk.core.domain.Event;
-import com.pjatk.web.dto.CreateEventDto;
-import com.pjatk.web.dto.ResponseEventDto;
-import com.pjatk.web.dto.UpdateEventDto;
+import com.pjatk.web.rest.dto.CreateEventDto;
+import com.pjatk.web.rest.dto.ResponseEventDto;
+import com.pjatk.web.rest.dto.UpdateEventDto;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 

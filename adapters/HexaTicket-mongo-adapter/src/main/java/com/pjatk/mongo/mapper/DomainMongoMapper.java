@@ -24,7 +24,7 @@ public class DomainMongoMapper {
     }
     public EventDocument toEventDocument(Event event){
         return new EventDocument(
-                null,
+                event.getId(),
                 event.getName(),
                 event.getDescription(),
                 event.getVenue(),

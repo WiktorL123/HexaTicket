@@ -1,11 +1,11 @@
-package com.pjatk.web.controller;
+package com.pjatk.web.rest.controller;
 
 import com.pjatk.core.domain.Event;
 import com.pjatk.core.port.in.EventsPort;
-import com.pjatk.web.dto.CreateEventDto;
-import com.pjatk.web.dto.ResponseEventDto;
-import com.pjatk.web.dto.UpdateEventDto;
-import com.pjatk.web.mapper.DomainDtoMapper;
+import com.pjatk.web.rest.dto.CreateEventDto;
+import com.pjatk.web.rest.dto.ResponseEventDto;
+import com.pjatk.web.rest.dto.UpdateEventDto;
+import com.pjatk.web.rest.mapper.DomainDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,15 +28,15 @@ public class EventController {
         URI location = URI.create("events/" + response.getId());
         return ResponseEntity.status(HttpStatus.CREATED).location(location).body(mapper.toEventDto(response));
     }
-    @GetMapping
-    public ResponseEntity<List<ResponseEventDto>> getAll(){
-        List<Event> allEvents = port.findAll();
-        List<ResponseEventDto> response = allEvents
-                .stream()
-                .map(event->mapper.toEventDto(event))
-                .toList();
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ResponseEventDto>> getAll(){
+//        List<Event> allEvents = port.findAll();
+//        List<ResponseEventDto> response = allEvents
+//                .stream()
+//                .map(event->mapper.toEventDto(event))
+//                .toList();
+//        return ResponseEntity.ok(response);
+//    }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") String id){

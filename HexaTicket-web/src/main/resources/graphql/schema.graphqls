@@ -5,23 +5,61 @@ type Event {
     startDate: String!
     venue: String!
     availableSeats: Int!
-    price: Float
+    totalSeats: Int!
+    price: BigDecimal
     category: String!
-    status: String!
+    status: Status!
+
 }
 
+enum Status {
+    ACTIVE,
+    INACTIVE,
+    CANCELLED,
+    SOLD_OUT
+}
 input CreateEventInput {
     name: String!
     description: String
-    startDate: String!      # Format: "2024-12-12T19:00:00"
+    startDate: String!
     venue: String!
     totalSeats: Int!
-    price: Float!
+    price: BigDecimal!
     category: String!
+}
+scalar BigDecimal
+
+
+input UpdateEvent {
+    name: String,
+    description: String,
+    startDate: String,
+    venue: String,
+    totalSeats: Int
+    availableSeats: Int,
+    price: BigDecimal,
+    category: String
+    status: Status
+}
+
+
+
+
+input DeleteEventInput {
+    id: ID!
 }
 
 type Mutation {
     createEvent(input: CreateEventInput!): Event!
+    updateEvent(id: ID!, input: UpdateEvent!): Event
+    deleteEvent(id: ID!): ID
 }
 
-
+type Query {
+    events(
+        page: Int =0,
+        size: Int = 10
+        category: String,
+        startDate: String
+    ): [Event!]!
+}

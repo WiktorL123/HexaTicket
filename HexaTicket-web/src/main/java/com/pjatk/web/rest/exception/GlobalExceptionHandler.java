@@ -1,9 +1,9 @@
-package com.pjatk.web.exception;
+package com.pjatk.web.rest.exception;
 
 import com.pjatk.core.exception.NotFoundException;
 import com.pjatk.core.exception.TooEarlyDateException;
 import com.pjatk.core.exception.TooMuchSeatsException;
-import org.springframework.data.mongodb.core.mapping.FieldName;
+//import org.springframework.data.mongodb.core.mapping.FieldName;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

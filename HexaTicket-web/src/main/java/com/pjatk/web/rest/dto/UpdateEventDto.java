@@ -1,4 +1,4 @@
-package com.pjatk.web.dto;
+package com.pjatk.web.rest.dto;
 
 import com.pjatk.core.domain.Status;
 import jakarta.validation.constraints.*;

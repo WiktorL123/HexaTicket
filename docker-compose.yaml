@@ -1,0 +1,16 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: hexaTicket_mongo
+    restart: always
+    ports:
+      - "27020:27017"
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: admin      # Login admina
+        MONGO_INITDB_ROOT_PASSWORD: admin123
+        MONGO_INITDB_AUTH_DATABASE: admin
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

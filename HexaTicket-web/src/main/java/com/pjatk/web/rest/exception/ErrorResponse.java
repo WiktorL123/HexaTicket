@@ -1,4 +1,4 @@
-package com.pjatk.web.exception;
+package com.pjatk.web.rest.exception;
 
 import lombok.*;
 

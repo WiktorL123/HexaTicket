@@ -42,13 +42,15 @@ public class EventService implements EventsPort {
         //jesli bilety zosyaly sprzedane -> wyjatek bo nie mozna usunac takiego wydarzenia
         port.delete(id);
     }
+
     @Override
-    public List<Event> findAll() {
-        return port.findAll();
+    public List<Event> findAll(int page, int size, String category, LocalDateTime startDate) {
+        return port.findAll(page, size, category, startDate);
     }
 
     @Override
     public Event updatePartially(String id, Event event) {
+        System.out.println("trying to set new values: " + event);
 
         Event existingEvent = port.getById(id).orElseThrow(()->new NotFoundException("Event not found"));
 

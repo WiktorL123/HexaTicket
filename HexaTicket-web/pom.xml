@@ -16,20 +16,20 @@
     <dependencies>
         <dependency>
             <groupId>com.pjatk</groupId>
-            <artifactId>HexaTicket-application</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.pjatk</groupId>
-            <artifactId>HexaTicket-mongo-adapter</artifactId>
+            <artifactId>HexaTicket-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
 <!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-graphql</artifactId>-->
+<!--            <groupId>com.pjatk</groupId>-->
+<!--            <artifactId>HexaTicket-mongo-adapter</artifactId>-->
+<!--            <version>${project.version}</version>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

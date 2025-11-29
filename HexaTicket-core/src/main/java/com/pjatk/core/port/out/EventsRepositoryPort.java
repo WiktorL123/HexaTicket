@@ -2,6 +2,7 @@ package com.pjatk.core.port.out;
 
 import com.pjatk.core.domain.Event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ public interface EventsRepositoryPort {
 
     void delete(String id);
 
-    List<Event> findAll();
+    List<Event> findAll(int page, int size, String category, LocalDateTime startDate);
 
     Optional<Event> getById(String id);
 

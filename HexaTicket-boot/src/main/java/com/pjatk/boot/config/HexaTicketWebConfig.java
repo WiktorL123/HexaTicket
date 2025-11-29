@@ -1,4 +1,4 @@
-package com.pjatk.web.config;
+package com.pjatk.boot.config;
 
 import com.pjatk.application.service.EventService;
 import com.pjatk.application.service.TicketService;

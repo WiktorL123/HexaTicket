@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/HexaTicket-application/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/HexaTicket-application/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/HexaTicket-boot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/HexaTicket-boot/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/HexaTicket-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/HexaTicket-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/HexaTicket-web/src/main/java" charset="UTF-8" />
