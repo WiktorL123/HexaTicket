@@ -5,6 +5,7 @@ import com.pjatk.core.port.in.EventsPort;
 import com.pjatk.web.graphql.contract.event.CreateEventInput;
 import com.pjatk.web.graphql.contract.event.UpdateEvent;
 import com.pjatk.web.graphql.mapper.GraphqlDomainMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -16,7 +17,7 @@ public class EventsMutationResolver {
     private final EventsPort port;
     private final GraphqlDomainMapper mapper;
     @MutationMapping
-    public com.pjatk.web.graphql.contract.event.Event createEvent(@Argument("input") CreateEventInput input){
+    public com.pjatk.web.graphql.contract.event.Event createEvent(@Valid  @Argument("input") CreateEventInput input){
         System.out.println("[RESOLVER] creating new data: " + input);
         Event eventToCreate = mapper.createInputToEventDomain(input);
         Event created = port.create(eventToCreate);
