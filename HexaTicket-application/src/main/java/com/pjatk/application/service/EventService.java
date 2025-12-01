@@ -39,7 +39,6 @@ public class EventService implements EventsPort {
     @Override
     public void delete(String id) {
         Event event = getById(id);
-        //jesli bilety zosyaly sprzedane -> wyjatek bo nie mozna usunac takiego wydarzenia
         port.delete(id);
     }
 
