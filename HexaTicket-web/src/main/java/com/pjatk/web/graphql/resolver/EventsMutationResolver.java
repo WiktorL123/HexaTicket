@@ -1,6 +1,6 @@
 package com.pjatk.web.graphql.resolver;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 import com.pjatk.core.port.in.EventsPort;
 import com.pjatk.web.graphql.contract.event.CreateEventInput;
 import com.pjatk.web.graphql.contract.event.UpdateEvent;

@@ -1,7 +1,7 @@
 package com.pjatk.application.service;
 
-import com.pjatk.core.domain.Event;
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.Event;
+import com.pjatk.core.domain.event.EventStatus;
 import com.pjatk.core.exception.NotFoundException;
 import com.pjatk.core.exception.TooEarlyDateException;
 import com.pjatk.core.exception.TooMuchSeatsException;
@@ -47,7 +47,7 @@ public class EventServiceTest {
             50,
             BigDecimal.valueOf(100),
             "CATEGORY_ONE",
-            Status.ACTIVE);
+            EventStatus.ACTIVE);
     private Event existingEventTwo = new Event(
             EXISING_ID_SECOND,
             "test_two",
@@ -58,7 +58,7 @@ public class EventServiceTest {
             100,
             BigDecimal.valueOf(150),
             "CATEGORY_TWO",
-            Status.ACTIVE
+            EventStatus.ACTIVE
     );
 
     private Event createEmptyPatch() {
@@ -140,7 +140,7 @@ public class EventServiceTest {
                 500,
                 BigDecimal.valueOf(150),
                 null,
-                Status.ACTIVE
+                EventStatus.ACTIVE
         );
         when(eventsRepositoryPort.save(any(Event.class))).thenReturn(expectedEventFromDb);
 
@@ -148,7 +148,7 @@ public class EventServiceTest {
 
         verify(eventsRepositoryPort, times(1)).save(any(Event.class));
 
-        assertEquals(result.getStatus(), expectedEventFromDb.getStatus(), "status musi sie zgadzać");
+        assertEquals(result.getEventStatus(), expectedEventFromDb.getEventStatus(), "status musi sie zgadzać");
         assertEquals(result.getTotalSeats(), expectedEventFromDb.getTotalSeats(), "calkowita ilosc miejsc musi sie zgadzać");
 
 

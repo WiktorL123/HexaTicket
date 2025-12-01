@@ -1,16 +1,17 @@
 package com.pjatk.core.port.in;
 
-import com.pjatk.core.domain.Ticket;
+import com.pjatk.core.command.BookTicketCommand;
+import com.pjatk.core.domain.event.Event;
+import com.pjatk.core.domain.ticket.Ticket;
+import com.pjatk.core.view.MyTicketView;
+
 
 import java.util.List;
 
 public interface TicketsPort {
+    Ticket bookTicket(BookTicketCommand command);
 
-    Ticket create(Ticket ticket);
+    void cancelTicket(String ticketId);
 
-    void delete();
-
-    List<Ticket> findALl();
-
-    Ticket getByEmail(String email);
+    List<MyTicketView> myTickets(String email);
 }

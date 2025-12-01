@@ -1,6 +1,6 @@
 package com.pjatk.core.port.out;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,5 +15,5 @@ public interface EventsRepositoryPort {
 
     Optional<Event> getById(String id);
 
-    Event updatePartially(String id, Event event);
+
 }

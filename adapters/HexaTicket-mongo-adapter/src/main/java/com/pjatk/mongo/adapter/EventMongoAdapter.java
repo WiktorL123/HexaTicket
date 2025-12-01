@@ -1,6 +1,6 @@
 package com.pjatk.mongo.adapter;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 import com.pjatk.core.exception.NotFoundException;
 import com.pjatk.core.port.out.EventsRepositoryPort;
 import com.pjatk.mongo.mapper.DomainMongoMapper;
@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,18 +46,6 @@ public class EventMongoAdapter implements EventsRepositoryPort {
         repository.delete(event);
     }
 
-//    @Override
-//    public List<Event> findAll() {
-//        List<EventDocument> allEvents = repository.findAll();
-//        List<Event> domainEvents = allEvents
-//                .stream()
-//                .map(event->mapper.toEventDomain(event))
-//                .toList();
-//        return domainEvents;
-//    }
-
-
-    // W module mongo-adapter/EventMongoAdapter.java
     @Override
     public List<Event> findAll(int page, int size, String category, LocalDateTime startDate) {
         List<Criteria> criteria = new ArrayList<>();
@@ -87,8 +74,4 @@ public class EventMongoAdapter implements EventsRepositoryPort {
                 .toList();
     }
 
-    @Override
-    public Event updatePartially(String id, Event event) {
-        return null;
-    }
 }

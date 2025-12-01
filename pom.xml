@@ -15,6 +15,7 @@
         <module>HexaTicket-web</module>
         <module>adapters/HexaTicket-mongo-adapter</module>
         <module>HexaTicket-boot</module>
+        <module>adapters/HexaTicket-mailer-adapter</module>
     </modules>
 
     <properties>

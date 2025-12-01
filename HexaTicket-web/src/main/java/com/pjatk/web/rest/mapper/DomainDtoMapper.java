@@ -1,6 +1,6 @@
 package com.pjatk.web.rest.mapper;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 import com.pjatk.web.rest.dto.CreateEventDto;
 import com.pjatk.web.rest.dto.ResponseEventDto;
 import com.pjatk.web.rest.dto.UpdateEventDto;
@@ -37,7 +37,7 @@ public class DomainDtoMapper {
                 event.getAvailableSeats(),
                 event.getPrice(),
                 event.getCategory(),
-                event.getStatus()
+                event.getEventStatus()
         );
     }
     public Event updateToEventDomain(UpdateEventDto dto){
@@ -51,7 +51,7 @@ public class DomainDtoMapper {
                 dto.getAvailableSeats(),
                 dto.getPrice(),
                 dto.getCategory(),
-                dto.getStatus()
+                dto.getEventStatus()
         );
     }
 }

@@ -1,6 +1,6 @@
 package com.pjatk.web.rest.dto;
 
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +23,5 @@ public class ResponseEventDto {
     private Integer availableSeats;
     private BigDecimal price;
     private String category;
-    private Status status;
+    private EventStatus eventStatus;
 }

@@ -1,6 +1,6 @@
 package com.pjatk.web.graphql.mapper;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 import com.pjatk.web.graphql.contract.event.CreateEventInput;
 import com.pjatk.web.graphql.contract.event.UpdateEvent;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class GraphqlDomainMapper {
                 input.availableSeats(),
                 input.price(),
                 input.category(),
-                input.status()
+                input.eventStatus()
         );
     }
     public com.pjatk.web.graphql.contract.event.Event EventFromDomain(Event event){
@@ -58,7 +58,7 @@ public class GraphqlDomainMapper {
                 .totalSeats(event.getTotalSeats())
                 .price(event.getPrice())
                 .category(event.getCategory())
-                .status(event.getStatus())
+                .status(event.getEventStatus())
                 .build();
     }
 }

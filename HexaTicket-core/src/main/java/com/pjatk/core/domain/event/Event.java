@@ -1,4 +1,4 @@
-package com.pjatk.core.domain;
+package com.pjatk.core.domain.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +21,5 @@ public class Event {
     private Integer availableSeats;
     private BigDecimal price;
     private String category;
-    private Status status;
+    private EventStatus eventStatus;
 }

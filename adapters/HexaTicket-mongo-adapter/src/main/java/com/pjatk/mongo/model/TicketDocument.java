@@ -1,5 +1,6 @@
 package com.pjatk.mongo.model;
 
+import com.pjatk.core.domain.ticket.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -26,7 +28,7 @@ public class TicketDocument {
     private String eventId;
 
     @Field(name = "ticket_code")
-    private UUID ticketCode;
+    private String ticketCode;
 
     @Field(name = "owner_email")
     private String ownerEmail;
@@ -35,7 +37,7 @@ public class TicketDocument {
     private String ownerName;
 
     @Field(name = "reserved_at")
-    private LocalDate reservedAt;
+    private LocalDateTime reservedAt;
 
-    private String status;
+    private TicketStatus status;
 }

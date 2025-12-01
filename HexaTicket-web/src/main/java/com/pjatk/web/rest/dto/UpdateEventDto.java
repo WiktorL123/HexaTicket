@@ -1,6 +1,6 @@
 package com.pjatk.web.rest.dto;
 
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.EventStatus;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +36,5 @@ public class UpdateEventDto {
 
     private String category;
 
-    private Status status;
+    private EventStatus eventStatus;
 }

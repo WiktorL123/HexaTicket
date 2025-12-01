@@ -1,6 +1,6 @@
 package com.pjatk.mongo.model;
 
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +36,5 @@ public class EventDocument {
     private BigDecimal price;
     @Indexed
     private String category;
-    private Status status;
+    private EventStatus eventStatus;
 }

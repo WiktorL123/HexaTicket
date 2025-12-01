@@ -1,11 +1,11 @@
-package com.pjatk.core.domain;
+package com.pjatk.core.domain.ticket;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 @Getter
 @Setter
@@ -16,13 +16,13 @@ public class Ticket {
 
     private String eventId;
 
-    private UUID ticketCode;
+    private String ticketCode;
 
     private String ownerEmail;
 
     private String ownerName;
 
-    private LocalDate reservedAt;
+    private LocalDateTime reservedAt;
 
-    private String status;
+    private TicketStatus status;
 }

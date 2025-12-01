@@ -1,7 +1,7 @@
 package com.pjatk.application.service;
 
-import com.pjatk.core.domain.Event;
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.Event;
+import com.pjatk.core.domain.event.EventStatus;
 import com.pjatk.core.exception.NotFoundException;
 import com.pjatk.core.exception.TooEarlyDateException;
 import com.pjatk.core.exception.TooMuchSeatsException;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class EventService implements EventsPort {
@@ -27,7 +26,7 @@ public class EventService implements EventsPort {
 
     @Override
     public Event create(Event event) {
-        event.setStatus(Status.ACTIVE);
+        event.setEventStatus(EventStatus.ACTIVE);
         if (event.getStartDate().isBefore(LocalDateTime.now().plusHours(24))){
             throw new TooEarlyDateException("Event must be at least 24h before start");
         }
@@ -90,8 +89,8 @@ public class EventService implements EventsPort {
             //jesli istnieje event z ta data->wyjatek
             existingEvent.setStartDate(event.getStartDate());
         }
-        if (event.getStatus() != null) {
-            existingEvent.setStatus(event.getStatus());
+        if (event.getEventStatus() != null) {
+            existingEvent.setEventStatus(event.getEventStatus());
         }
         return port.save(existingEvent);
     }

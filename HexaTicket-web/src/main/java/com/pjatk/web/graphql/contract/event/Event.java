@@ -1,6 +1,6 @@
 package com.pjatk.web.graphql.contract.event;
 
-import com.pjatk.core.domain.Status;
+import com.pjatk.core.domain.event.EventStatus;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -16,6 +16,6 @@ public record Event(
         Integer totalSeats,
         BigDecimal price,
         String category,
-        Status status
+        EventStatus eventStatus
 ) {
 }

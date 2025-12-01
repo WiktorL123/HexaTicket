@@ -7,6 +7,7 @@
         <groupId>com.pjatk</groupId>
         <artifactId>HexaTicket</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>HexaTicket-boot</artifactId>
@@ -42,12 +43,23 @@
             <artifactId>HexaTicket-web</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.pjatk</groupId>
+            <artifactId>HexaTicket-mailer-adapter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.pjatk</groupId>
             <artifactId>HexaTicket-mongo-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-extended-scalars</artifactId>

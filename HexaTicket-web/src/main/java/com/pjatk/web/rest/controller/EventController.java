@@ -1,6 +1,6 @@
 package com.pjatk.web.rest.controller;
 
-import com.pjatk.core.domain.Event;
+import com.pjatk.core.domain.event.Event;
 import com.pjatk.core.port.in.EventsPort;
 import com.pjatk.web.rest.dto.CreateEventDto;
 import com.pjatk.web.rest.dto.ResponseEventDto;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
