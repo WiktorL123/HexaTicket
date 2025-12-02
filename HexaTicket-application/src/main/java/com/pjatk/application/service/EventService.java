@@ -17,6 +17,8 @@ public class EventService implements EventsPort {
 
     private final EventsRepositoryPort port;
 
+
+
     @Override
     public Event getById(String id) {
        return port.getById(id).

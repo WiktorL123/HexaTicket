@@ -18,6 +18,37 @@ enum Status {
     CANCELLED,
     SOLD_OUT
 }
+
+enum TicketStatus {
+        EXPIRED,
+        SOLD,
+        AVAILABLE,
+        LIVE,
+        CANCELLED
+}
+
+type Ticket {
+    id: ID!
+    eventId: String
+    ticketCode: String
+    ownerEmail: String
+    ownerName: String
+}
+
+
+type MyTicketView {
+    ownerName: String
+    ownerEmail: String
+    event: Event
+}
+
+
+input BookTicketInput {
+    eventId: String
+    ownerName: String
+    ownerEmail: String
+}
+
 input CreateEventInput {
     name: String!
     description: String
@@ -53,6 +84,8 @@ type Mutation {
     createEvent(input: CreateEventInput!): Event!
     updateEvent(id: ID!, input: UpdateEvent!): Event
     deleteEvent(id: ID!): ID
+    bookEvent(input: BookTicketInput!): Ticket!
+    cancelTicket(ticketId: ID!): String
 }
 
 type Query {
@@ -62,4 +95,5 @@ type Query {
         category: String,
         startDate: String
     ): [Event!]!
+    myEvents(email: String): [MyTicketView]
 }

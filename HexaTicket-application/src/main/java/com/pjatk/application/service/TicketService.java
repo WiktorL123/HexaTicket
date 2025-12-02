@@ -62,7 +62,7 @@ private final NotificationPort notificationPort;
         ticket.setStatus(TicketStatus.CANCELLED);
 
         Event eventToCancel = eventsINPort.getById(ticket.getEventId());
-        eventToCancel.setAvailableSeats(eventToCancel.getAvailableSeats() - 1);
+        eventToCancel.setAvailableSeats(eventToCancel.getAvailableSeats() + 1);
         eventsINPort.create(eventToCancel);
 
         notificationPort.sendEmail(ticket.getOwnerEmail());

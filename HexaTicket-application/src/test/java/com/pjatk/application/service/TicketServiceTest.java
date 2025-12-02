@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TicketServiceTest {
 
-    // Porty do mockowania
     @Mock private TicketsRepositoryPort ticketsRepositoryPort;
     @Mock private EventsPort eventsINPort;
     @Mock private NotificationPort notificationPort;
@@ -35,6 +34,7 @@ class TicketServiceTest {
     @InjectMocks private TicketService ticketService;
 
     private final String EVENT_ID = "event-123";
+    ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
     private final String USER_EMAIL = "test@user.com";
     private BookTicketCommand command;
     private Event availableEvent;
@@ -42,7 +42,7 @@ class TicketServiceTest {
 
     @BeforeEach
     void setUp() {
-        command = new BookTicketCommand(EVENT_ID, USER_EMAIL, "Jan Kowalski");
+        command = new BookTicketCommand(USER_EMAIL, "Jan Kowalski", EVENT_ID );
 
         availableEvent = new Event();
         availableEvent.setId(EVENT_ID);
@@ -54,6 +54,7 @@ class TicketServiceTest {
         savedTicket.setId(UUID.randomUUID().toString());
         savedTicket.setTicketCode("ABCDEFGH");
         savedTicket.setOwnerEmail(USER_EMAIL);
+        savedTicket.setStatus(TicketStatus.SOLD);
     }
 
 
@@ -64,12 +65,13 @@ class TicketServiceTest {
 
         Ticket result = ticketService.bookTicket(command);
 
-        assertEquals(4, availableEvent.getAvailableSeats(), "Dostępne miejsca powinny być zmniejszone o 1.");
+        verify(eventsINPort, times(1)).create(eventCaptor.capture());
 
-        verify(eventsINPort, times(1)).create(availableEvent); // Używamy 'create' zgodnie z Twoją nomenklaturą
+        Event capturedEvent = eventCaptor.getValue();
 
-        verify(notificationPort, times(1)).sendEmail(USER_EMAIL); // Sprawdź, czy Mailer został wywołany
+        assertEquals(4, capturedEvent.getAvailableSeats(), "Dostepne miejsca powiiny byc zmniejszone o 1");
 
+        verify(notificationPort, times(1)).sendEmail(USER_EMAIL);
         verify(ticketsRepositoryPort, times(1)).save(any(Ticket.class));
         assertEquals(TicketStatus.SOLD, result.getStatus());
     }
@@ -126,9 +128,9 @@ class TicketServiceTest {
         assertEquals(6, eventBeforeCancel.getAvailableSeats(), "Dostępne miejsca powinny być ZWIĘKSZONE o 1 (5 -> 6).");
         assertEquals(TicketStatus.CANCELLED, ticketToCancel.getStatus(), "Status biletu powinien być CANCELLED.");
 
-        verify(eventsINPort, times(1)).create(eventBeforeCancel); // Zapis zaktualizowanego Eventu
-        verify(ticketsRepositoryPort, times(1)).save(ticketToCancel); // Zapis zaktualizowanego Biletu
-        verify(notificationPort, times(1)).sendEmail(USER_EMAIL); // Wysłanie powiadomienia
+        verify(eventsINPort, times(1)).create(eventBeforeCancel);
+        verify(ticketsRepositoryPort, times(1)).save(ticketToCancel);
+        verify(notificationPort, times(1)).sendEmail(USER_EMAIL);
     }
 
     @Test

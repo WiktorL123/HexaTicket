@@ -70,7 +70,7 @@ public class DomainMongoMapper {
         return new MyTicketView(
                 projection.getOwnerName(),
                 projection.getEmail(),
-                eventDomainDetails
+                eventDomainDetails.get(0)
         );
     }
 }

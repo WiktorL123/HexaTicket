@@ -7,13 +7,15 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
 @Repository
 public interface TicketRepository extends MongoRepository<TicketDocument, String> {
     @Aggregation(pipeline = {
+            "{ '$addFields': { 'convertedEventId': { $toObjectId: '$eventId' } } }",
+
+            // KROK 2: FILTROWANIE
             "{'$match': {'owner_email':  ?0}}",
 
-            "{'$lookup':  {'from': 'events', 'localField' :  'eventId', 'foreignField':  '_id', 'as':  'eventDetails'}}",
+            "{ '$lookup':  {'from': 'events', 'localField' :  'convertedEventId', 'foreignField':  '_id', 'as':  'eventDetails'}}",
 
             "{'$unwind':  '$eventDetails'}",
 

@@ -16,6 +16,6 @@ import java.util.List;
 public class MyTicketView {
     String ownerName;
     String email;
-    List<Event> event;
+    Event event;
 
 }
