@@ -9,25 +9,22 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends MongoRepository<TicketDocument, String> {
-    List<TicketDocument> findByOwnerEmail(String ownerEmail);
-//    @Aggregation(pipeline = {
-//            "{'$match': {'owner_email':  ?0}}",
-//
-//            "{ '$addFields': { 'convertedEventId': { $toObjectId: '$eventId' } } }",
-//
-//            "{ '$lookup':  {'from': 'events', 'localField' :  'convertedEventId', 'foreignField':  '_id', 'as':  'eventDetails'}}",
-//
-//            "{'$unwind':  '$eventDetails'}",
-//
-//            "{'$project':  {" +
-//                    "'_id': '$_id'," +
-//                    "'ownerName': '$owner_name',"+
-//                    "'email': '$owner_email',"+
-//                    "'ticketCode': '$ticket_code',"+
-//                    "'eventDetails':  '$eventDetails',"+
-//                    "}}"
-//    })
-//    List<MyTicketsProjection> findMyTicketsByOwnerEmailAggregation(String email);
+    @Aggregation(pipeline = {
+            "{'$match': {'owner_email':  ?0}}",
 
+            "{ '$addFields': { 'convertedEventId': { $toObjectId: '$eventId' } } }",
 
+            "{ '$lookup':  {'from': 'events', 'localField' :  'convertedEventId', 'foreignField':  '_id', 'as':  'eventDetails'}}",
+
+            "{'$unwind':  '$eventDetails'}",
+
+            "{'$project':  {" +
+                    "'_id': '$_id'," +
+                    "'ownerName': '$owner_name',"+
+                    "'email': '$owner_email',"+
+                    "'ticketCode': '$ticket_code',"+
+                    "'eventDetails':  '$eventDetails',"+
+                    "}}"
+    })
+    List<MyTicketsProjection> findMyTicketsByOwnerEmailAggregation(String email);
 }
