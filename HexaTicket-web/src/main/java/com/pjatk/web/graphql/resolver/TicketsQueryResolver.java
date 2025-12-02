@@ -17,7 +17,7 @@ public class TicketsQueryResolver {
     private final GraphqlDomainMapper mapper;
 
     @QueryMapping
-    public List<MyTicketView> myEvents(@Argument("email") String email) {
+    public List<MyTicketView> myTickets(@Argument("email") String email) {
         List<com.pjatk.core.view.MyTicketView> eventsDomain = port.myTickets(email);
         return eventsDomain
                 .stream()

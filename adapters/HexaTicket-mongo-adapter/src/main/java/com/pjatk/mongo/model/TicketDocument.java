@@ -24,8 +24,8 @@ public class TicketDocument {
 
     @Id
     private String id;
-    @Indexed
-    private String eventId;
+    @DocumentReference
+    private EventDocument event;
 
     @Field(name = "ticket_code")
     private String ticketCode;

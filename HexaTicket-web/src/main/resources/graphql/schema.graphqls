@@ -95,5 +95,5 @@ type Query {
         category: String,
         startDate: String
     ): [Event!]!
-    myEvents(email: String): [MyTicketView]
+    myTickets(email: String): [MyTicketView]
 }

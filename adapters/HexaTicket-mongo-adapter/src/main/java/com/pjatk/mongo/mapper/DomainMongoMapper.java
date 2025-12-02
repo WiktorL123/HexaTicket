@@ -40,10 +40,10 @@ public class DomainMongoMapper {
                 event.getEventStatus()
         );
     }
-    public TicketDocument toTicketDocument(Ticket ticket){
+    public TicketDocument toTicketDocument(Ticket ticket, EventDocument eventDocument){
        return new TicketDocument(
                ticket.getId(),
-               ticket.getEventId(),
+               eventDocument,
                ticket.getTicketCode(),
                ticket.getOwnerEmail(),
                ticket.getOwnerName(),
@@ -54,7 +54,7 @@ public class DomainMongoMapper {
     public Ticket toTicketDomain(TicketDocument document){
        return new Ticket(
                document.getId(),
-               document.getEventId(),
+               document.getEvent().getId(),
                document.getTicketCode(),
                document.getOwnerEmail(),
                document.getOwnerName(),
@@ -62,15 +62,11 @@ public class DomainMongoMapper {
                document.getStatus()
        );
     }
-    public MyTicketView projectionToTicketView(MyTicketsProjection projection){
-        List<Event> eventDomainDetails =  projection.getEventDetails()
-                .stream()
-                .map(doc->toEventDomain(doc))
-                .toList();
+    public MyTicketView projectionToTicketView(TicketDocument document){
         return new MyTicketView(
-                projection.getOwnerName(),
-                projection.getEmail(),
-                eventDomainDetails.get(0)
+                document.getOwnerName(),
+                document.getOwnerEmail(),
+                toEventDomain(document.getEvent())
         );
     }
 }

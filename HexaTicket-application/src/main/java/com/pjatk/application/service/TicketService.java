@@ -74,6 +74,7 @@ private final NotificationPort notificationPort;
 
     @Override
     public List<MyTicketView> myTickets(String email) {
+        System.out.println("service:  " + ticketsRepositoryPort.myTickets(email));
         return ticketsRepositoryPort.myTickets(email);
     }
 }
