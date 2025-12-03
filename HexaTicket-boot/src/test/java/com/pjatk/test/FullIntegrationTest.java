@@ -1,10 +1,14 @@
 package com.pjatk.test;
 
+import com.pjatk.boot.HexaTicketApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean; // <--- KLUCZOWY IMPORT
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
@@ -12,9 +16,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import com.pjatk.boot.HexaTicketApplication;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @Testcontainers
 @SpringBootTest(
@@ -32,20 +37,21 @@ class FullIntegrationTest {
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-        // Fake mailer config
-        registry.add("spring.mail.host", () -> "localhost");
-        registry.add("spring.mail.port", () -> "3025");
-        registry.add("spring.mail.username", () -> "test");
-        registry.add("spring.mail.password", () -> "test");
+        // Mail properties mogą być dowolne, bo i tak mockujemy beana
     }
 
     @Autowired
     private GraphQlTester graphQlTester;
 
+    // --- MOCKOWANIE MAILA ---
+    // Spring zastąpi prawdziwą implementację (Brevo) tym mockiem w kontekście testu.
+    // Metoda send() nie rzuci błędu Connection Refused, bo nic nie zrobi.
+    @MockBean
+    private JavaMailSender javaMailSender;
+
     @Test
     void shouldCompleteFullUserJourney() {
         // 1. CREATE EVENT
-        // Tworzymy Event z 10 miejscami
         String createEventMutation = """
             mutation {
                 createEvent(input: {
@@ -67,7 +73,6 @@ class FullIntegrationTest {
         assertThat(eventId).isNotNull();
 
         // 2. BOOK TICKET (Używamy nazwy 'bookEvent' ze schematu!)
-        // Nie pytamy o 'status', bo usunąłeś go z typu Ticket w schemacie
         String bookMutation = String.format("""
             mutation {
                 bookEvent(input: {
@@ -77,21 +82,23 @@ class FullIntegrationTest {
                 }) {
                     id
                     ticketCode
-                    # status - USUNIĘTO (brak w schemacie)
+                    # Usunięto pole 'status', bo nie masz go w type Ticket
                 }
             }
         """, eventId);
 
         String ticketId = graphQlTester.document(bookMutation)
                 .execute()
-                .path("bookEvent.id").entity(String.class).get(); // bookEvent!
+                .path("bookEvent.id").entity(String.class).get();
+
+        // WERYFIKACJA MAILA (Czy serwis spróbował wysłać?)
+        // Oczekujemy 1 wywołania po rezerwacji
+        verify(javaMailSender, times(1)).send(any(SimpleMailMessage.class));
 
         // 3. VERIFY EVENT SEATS (Dekrementacja)
-        // Sprawdzamy czy AvailableSeats spadło (10 -> 9)
         String verifyEventQuery = """
             query { 
                 events(category: "TEST") { 
-                    id 
                     availableSeats 
                 } 
             }
@@ -101,8 +108,7 @@ class FullIntegrationTest {
                 .execute()
                 .path("events[0].availableSeats").entity(Integer.class).isEqualTo(9);
 
-        // 4. MY TICKETS (Weryfikacja Query Mieszanego)
-        // Sprawdzamy, czy adapter łączy dane z Eventem
+        // 4. MY TICKETS (Weryfikacja Agregacji)
         String myTicketsQuery = """
             query {
                 myTickets(email: "jan@test.pl") {
@@ -110,7 +116,6 @@ class FullIntegrationTest {
                     ownerEmail
                     event {
                         name
-                        venue
                     }
                 }
             }
@@ -132,8 +137,11 @@ class FullIntegrationTest {
                 .execute()
                 .path("cancelTicket").entity(String.class).isEqualTo(ticketId);
 
-        // 6. FINAL VERIFY (Inkrementacja)
-        // Sprawdzamy czy miejsce wróciło (9 -> 10) po anulowaniu
+        // WERYFIKACJA MAILA (Czy serwis wysłał drugi mail o anulowaniu?)
+        // Teraz powinno być 2 wywołania łącznie (1 book + 1 cancel)
+        verify(javaMailSender, times(2)).send(any(SimpleMailMessage.class));
+
+        // 6. FINAL VERIFY (Inkrementacja - zwrot miejsca)
         graphQlTester.document(verifyEventQuery)
                 .execute()
                 .path("events[0].availableSeats").entity(Integer.class).isEqualTo(10);
