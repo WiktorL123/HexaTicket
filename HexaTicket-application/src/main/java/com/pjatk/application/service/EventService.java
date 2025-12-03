@@ -27,6 +27,11 @@ public class EventService implements EventsPort {
     }
 
     @Override
+    public void update(Event event) {
+        port.save(event);
+    }
+
+    @Override
     public Event create(Event event) {
         event.setEventStatus(EventStatus.ACTIVE);
         if (event.getStartDate().isBefore(LocalDateTime.now().plusHours(24))){

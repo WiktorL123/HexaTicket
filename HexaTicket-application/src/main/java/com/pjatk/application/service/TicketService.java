@@ -21,10 +21,9 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class TicketService implements TicketsPort {
-private final TicketsRepositoryPort ticketsRepositoryPort;
-private final EventsPort eventsINPort;
-private final NotificationPort notificationPort;
-
+    private final TicketsRepositoryPort ticketsRepositoryPort;
+    private final EventsPort eventsINPort;
+    private final NotificationPort notificationPort;
 
 
     @Override
@@ -32,10 +31,10 @@ private final NotificationPort notificationPort;
         Event foundEvent = eventsINPort.getById(command.eventId());//adapter rzuca not found
         String ticketCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         if (foundEvent.getEventStatus().equals(EventStatus.CANCELLED) ||
-                foundEvent.getEventStatus().equals(EventStatus.SOLD_OUT)){
+                foundEvent.getEventStatus().equals(EventStatus.SOLD_OUT)) {
             throw new TicketCannotBeBookedException("cannot book ticket for event with" + foundEvent.getEventStatus() + "status");
         }
-        if (foundEvent.getAvailableSeats() <= 0){
+        if (foundEvent.getAvailableSeats() <= 0) {
             throw new TooMuchSeatsException("All seats have been reserved");
         }
 
@@ -48,28 +47,42 @@ private final NotificationPort notificationPort;
                 LocalDateTime.now(),
                 TicketStatus.SOLD
         );
-        foundEvent.setAvailableSeats(foundEvent.getAvailableSeats() -1);
+        System.out.println("avaliable seats 1: " + foundEvent.getAvailableSeats());
+        foundEvent.setAvailableSeats(foundEvent.getAvailableSeats() - 1);//ewidetnie odejmuje
+        System.out.println("available seats 2: " + foundEvent.getAvailableSeats());
+        System.out.println("saving updated: " + foundEvent.getId());
+        eventsINPort.update(foundEvent);//zapisuje
 
-        eventsINPort.create(foundEvent);
-        notificationPort.sendEmail(ticketToSave.getOwnerEmail());//MOCK NA RAZIE
+        String body = "You have booked your ticket for eventId: " +
+                 foundEvent.getName()
+                + ". Have fun on the event! If it is a mistake, please contact us";
+        String subject = "Your ticket has been booked";
+
+        notificationPort.sendNotification(new NotificationPort.NotificationDetails(ticketToSave.getOwnerEmail(), subject, body));
+
         return ticketsRepositoryPort.save(ticketToSave);
     }
 
     @Override
     public void cancelTicket(String ticketId) {
         Ticket ticket = ticketsRepositoryPort.findById(ticketId)
-                .orElseThrow(()->new NotFoundException("ticket not found"));
+                .orElseThrow(() -> new NotFoundException("ticket not found"));
         ticket.setStatus(TicketStatus.CANCELLED);
 
         Event eventToCancel = eventsINPort.getById(ticket.getEventId());
         eventToCancel.setAvailableSeats(eventToCancel.getAvailableSeats() + 1);
-        eventsINPort.create(eventToCancel);
+        eventsINPort.update(eventToCancel);
 
-        notificationPort.sendEmail(ticket.getOwnerEmail());
+
+        String body = "You have cancelled your ticket for eventId: "
+                + eventToCancel.getId() +
+                "If it is a mistake, please contact us";
+        String subject = "Your ticked has been cancelled";
+
+        notificationPort.sendNotification(new NotificationPort.NotificationDetails(ticket.getOwnerEmail(), subject, body));
 
         ticketsRepositoryPort.save(ticket);
     }
-
 
 
     @Override
@@ -78,3 +91,5 @@ private final NotificationPort notificationPort;
         return ticketsRepositoryPort.myTickets(email);
     }
 }
+
+

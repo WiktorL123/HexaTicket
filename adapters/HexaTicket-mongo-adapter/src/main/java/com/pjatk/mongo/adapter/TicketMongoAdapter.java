@@ -45,22 +45,24 @@ public class TicketMongoAdapter implements TicketsRepositoryPort {
                 .map(doc->mapper.toTicketDomain(doc));
     }
 
+
     @Override
     public List<MyTicketView> myTickets(String email) {
-        System.out.println("[DEBUG] Szukam biletów dla: " + email);
+        System.out.println("[DEBUG] Agregacja dla: " + email);
 
         Aggregation aggregation = Aggregation.newAggregation(
-                // 1. MATCH
+                // 1. MATCH: Filtrowanie po emailu
                 Aggregation.match(Criteria.where("owner_email").is(email)),
 
-                // 2. LOOKUP (Bez konwersji! Używamy pola 'event')
-                // 'event' to nazwa pola w Twoim dokumencie w bazie
+                // 2. LOOKUP: Łączenie po poprawnych polach z bazy
+                // localField: "event" (tak nazywa się pole w Twoim zrzucie z bazy)
+                // foreignField: "_id"
                 Aggregation.lookup("events", "event", "_id", "eventDetails"),
 
-                // 3. UNWIND
+                // 3. UNWIND: Rozwijamy tablicę (true = nie usuwaj jak pusty, dla bezpieczeństwa)
                 Aggregation.unwind("eventDetails", true),
 
-                // 4. PROJECT
+                // 4. PROJECT: Mapowanie nazw pól Baza -> Java
                 Aggregation.project()
                         .and("_id").as("id")
                         .and("owner_name").as("ownerName")
@@ -75,11 +77,11 @@ public class TicketMongoAdapter implements TicketsRepositoryPort {
                 MyTicketsProjection.class
         );
 
+        // Debugowanie wyników
         List<MyTicketsProjection> mappedResults = results.getMappedResults();
-
-        // Debug
-        if (!mappedResults.isEmpty()) {
-            System.out.println("Znalazlem eventDetails: " + (mappedResults.get(0).getEventDetails() != null));
+        System.out.println("[DEBUG] Pobrane rekordy: " + mappedResults.size());
+        if (!mappedResults.isEmpty() && mappedResults.get(0).getEventDetails() == null) {
+            System.out.println("[ALARM] EventDetails jest null! Sprawdź czy ID w 'event' istnieje w kolekcji 'events'.");
         }
 
         return mappedResults.stream()

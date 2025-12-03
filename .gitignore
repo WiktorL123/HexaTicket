@@ -1,4 +1,4 @@
-target/
+gittarget/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -21,6 +21,8 @@ target/
 .springBeans
 .sts4-cache
 
+
+HexaTicket-boot/src/main/resources/application.yaml
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -34,5 +36,6 @@ build/
 ### VS Code ###
 .vscode/
 
+**/target
 ### Mac OS ###
 .DS_Store

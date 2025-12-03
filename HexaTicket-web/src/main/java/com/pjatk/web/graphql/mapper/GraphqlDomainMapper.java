@@ -62,7 +62,7 @@ public class GraphqlDomainMapper {
                 .totalSeats(event.getTotalSeats())
                 .price(event.getPrice())
                 .category(event.getCategory())
-                .eventStatus(event.getEventStatus())
+                .status(event.getEventStatus())
                 .build();
     }
 

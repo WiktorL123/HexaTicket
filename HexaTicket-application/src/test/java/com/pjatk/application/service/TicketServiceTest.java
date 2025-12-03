@@ -39,6 +39,9 @@ class TicketServiceTest {
     private BookTicketCommand command;
     private Event availableEvent;
     private Ticket savedTicket;
+    private final String emailBody = "test body";
+    private final String subject = "test subject";
+    private final String getterEmail = "";
 
     @BeforeEach
     void setUp() {
@@ -65,13 +68,15 @@ class TicketServiceTest {
 
         Ticket result = ticketService.bookTicket(command);
 
-        verify(eventsINPort, times(1)).create(eventCaptor.capture());
-
+        verify(eventsINPort, times(1)).update(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
-
         assertEquals(4, capturedEvent.getAvailableSeats(), "Dostepne miejsca powiiny byc zmniejszone o 1");
 
-        verify(notificationPort, times(1)).sendEmail(USER_EMAIL);
+        ArgumentCaptor<NotificationPort.NotificationDetails> emailCaptor = ArgumentCaptor.forClass(NotificationPort.NotificationDetails.class);
+        verify(notificationPort, times(1)).sendNotification(emailCaptor.capture());
+
+        assertEquals(USER_EMAIL, emailCaptor.getValue().email());
+
         verify(ticketsRepositoryPort, times(1)).save(any(Ticket.class));
         assertEquals(TicketStatus.SOLD, result.getStatus());
     }
@@ -88,7 +93,7 @@ class TicketServiceTest {
 
 
         verify(ticketsRepositoryPort, never()).save(any(Ticket.class));
-        verify(notificationPort, never()).sendEmail(anyString());
+        verify(notificationPort, never()).sendNotification(new NotificationPort.NotificationDetails(getterEmail, subject, emailBody));
     }
 
     @Test
@@ -120,7 +125,6 @@ class TicketServiceTest {
         ticketToCancel.setOwnerEmail(USER_EMAIL);
 
         when(ticketsRepositoryPort.findById(ticketId)).thenReturn(Optional.of(ticketToCancel));
-
         when(eventsINPort.getById(EVENT_ID)).thenReturn(eventBeforeCancel);
 
         ticketService.cancelTicket(ticketId);
@@ -128,9 +132,14 @@ class TicketServiceTest {
         assertEquals(6, eventBeforeCancel.getAvailableSeats(), "Dostępne miejsca powinny być ZWIĘKSZONE o 1 (5 -> 6).");
         assertEquals(TicketStatus.CANCELLED, ticketToCancel.getStatus(), "Status biletu powinien być CANCELLED.");
 
-        verify(eventsINPort, times(1)).create(eventBeforeCancel);
+        verify(eventsINPort, times(1)).update(eventBeforeCancel);
+
         verify(ticketsRepositoryPort, times(1)).save(ticketToCancel);
-        verify(notificationPort, times(1)).sendEmail(USER_EMAIL);
+
+        ArgumentCaptor<NotificationPort.NotificationDetails> emailCaptor = ArgumentCaptor.forClass(NotificationPort.NotificationDetails.class);
+        verify(notificationPort, times(1)).sendNotification(emailCaptor.capture());
+
+        assertEquals(USER_EMAIL, emailCaptor.getValue().email());
     }
 
     @Test

@@ -1,19 +1,18 @@
-server:
-  port: 8081
 
-spring:
-  application:
-    name: HexaTicket
-  data:
-    mongodb:
-      # 1. Dodałem nazwę bazy '/hexa-ticket' do URI
-      #uri: mongodb+srv://wiktorlem1_db_user:ai7pKD5t4w91LAgW@hexaticket.dcv3ed4.mongodb.net/hexa-ticket?appName=HexaTicket
-      uri: mongodb://admin:admin123@localhost:27020/hexa-ticket?authSource=admin
 
-      # 2. Dla pewności jawnie wskazujemy bazę (to naprawia błąd "empty name")
-      database: hexa-ticket
-
-      auto-index-creation: true
-  graphql:
-    graphiql:
-      enabled: true
+#spring:
+#  application:
+#    name: HexaTicket
+#  data:
+#    mongodb:
+#      # 1. Dodałem nazwę bazy '/hexa-ticket' do URI
+#      #uri: mongodb+srv://wiktorlem1_db_user:ai7pKD5t4w91LAgW@hexaticket.dcv3ed4.mongodb.net/hexa-ticket?appName=HexaTicket
+#      uri: mongodb://admin:admin123@localhost:27020/hexa-ticket?authSource=admin
+#
+#      # 2. Dla pewności jawnie wskazujemy bazę (to naprawia błąd "empty name")
+#      database: hexa-ticket
+#
+#      auto-index-creation: true
+#  graphql:
+#    graphiql:
+#      enabled: true

@@ -16,6 +16,6 @@ public record Event(
         Integer totalSeats,
         BigDecimal price,
         String category,
-        EventStatus eventStatus
+        EventStatus status
 ) {
 }
